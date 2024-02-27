@@ -3,10 +3,18 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
-get '/' do
-  erb :index
+['/', '/memos'].each do |path|
+  get path do
+    # データを取得する処理を追加
+    erb :index
+  end
 end
 
 get '/memos/new' do
   erb :new
+end
+
+post '/memos/create' do
+  # データを保存する処理を追加
+  redirect '/memos'
 end
