@@ -25,6 +25,12 @@ post '/memos/create' do
   redirect '/memos'
 end
 
+get '/memos/:id' do
+  memos = read_memos(FILE_PATH)
+  @memo = memos[params[:id]]
+  erb :show
+end
+
 def read_memos(file_path)
   return nil if File.zero?(file_path)
 
