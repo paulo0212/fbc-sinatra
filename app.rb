@@ -38,6 +38,13 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
+patch '/memos/:id' do
+  memos = read_memos(FILE_PATH)
+  memos[params[:id]] = params.slice(:title, :contents)
+  save_memos(FILE_PATH, memos)
+  redirect "/memos/#{params[:id]}"
+end
+
 def read_memos(file_path)
   return nil if File.zero?(file_path)
 
