@@ -31,6 +31,13 @@ get '/memos/:id' do
   erb :show
 end
 
+get '/memos/:id/edit' do
+  memos = read_memos(FILE_PATH)
+  @id = params[:id]
+  @memo = memos[params[:id]]
+  erb :edit
+end
+
 def read_memos(file_path)
   return nil if File.zero?(file_path)
 
