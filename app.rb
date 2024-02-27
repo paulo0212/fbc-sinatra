@@ -8,7 +8,7 @@ FILE_PATH = './data/memos.json'
 
 ['/', '/memos'].each do |path|
   get path do
-    # データを取得する処理を追加
+    @memos = read_memos(FILE_PATH)
     erb :index
   end
 end

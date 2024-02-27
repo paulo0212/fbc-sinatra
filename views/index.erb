@@ -6,5 +6,10 @@
 </head>
 <body>
   <h1>Hello Sinatra!</h1>
+  <ul>
+    <% @memos.each do |key, memo|%>
+      <li><a href="/memos/<%= key %>"><%= memo['title'] %></a></li>
+    <% end %>
+  </ul>
 </body>
 </html>
