@@ -10,5 +10,9 @@
     <h2><%= @memo['title'] %></h2>
     <p><%= @memo['contents'] %></p>
   </main>
+  <form action="/memos/<%= @id %>" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete">
+  </form>
 </body>
 </html>

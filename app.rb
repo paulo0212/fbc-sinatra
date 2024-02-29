@@ -27,6 +27,7 @@ end
 
 get '/memos/:id' do
   memos = read_memos(FILE_PATH)
+  @id = params[:id]
   @memo = memos[params[:id]]
   erb :show
 end
@@ -43,6 +44,13 @@ patch '/memos/:id' do
   memos[params[:id]] = params.slice(:title, :contents)
   save_memos(FILE_PATH, memos)
   redirect "/memos/#{params[:id]}"
+end
+
+delete '/memos/:id' do
+  memos = read_memos(FILE_PATH)
+  memos.delete(params[:id])
+  save_memos(FILE_PATH, memos)
+  redirect '/memos'
 end
 
 def read_memos(file_path)
