@@ -1,6 +1,6 @@
 <a href='/memos/new'><button>+ New Memo</button></a>
 <ul>
   <% @memos.each do |key, memo|%>
-    <li><a href="/memos/<%= key %>"><%= memo['title'] %></a></li>
+    <li><a href="/memos/<%= h(key) %>"><%= h(memo['title']) %></a></li>
   <% end %>
 </ul>
