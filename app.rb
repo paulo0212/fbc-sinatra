@@ -66,3 +66,13 @@ end
 def save_memos(file_path, memos)
   File.open(file_path, 'w') { |f| JSON.dump(memos, f) }
 end
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+
+  def hattr(text)
+    Rack::Utils.escape_path(text)
+  end
+end
