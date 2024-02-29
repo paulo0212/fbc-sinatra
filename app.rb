@@ -19,7 +19,7 @@ get '/memos/new' do
   erb :new
 end
 
-post '/memos/create' do
+post '/memos' do
   memos = read_memos(FILE_PATH) || {}
   max_id = memos.keys.map(&:to_i).max || 0
   memos[max_id + 1] = params
