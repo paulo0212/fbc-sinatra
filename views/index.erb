@@ -1,3 +1,4 @@
+<a href='/memos/new'><button>+ New Memo</button></a>
 <ul>
   <% @memos.each do |key, memo|%>
     <li><a href="/memos/<%= key %>"><%= memo['title'] %></a></li>
