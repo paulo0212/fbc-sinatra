@@ -9,11 +9,13 @@ FILE_PATH = './data/memos.json'
 ['/', '/memos'].each do |path|
   get path do
     @memos = read_memos(FILE_PATH)
+    @title = 'Memo App'
     erb :index
   end
 end
 
 get '/memos/new' do
+  @title = 'New Memo | Memo App'
   erb :new
 end
 
@@ -29,6 +31,7 @@ get '/memos/:id' do
   memos = read_memos(FILE_PATH)
   @id = params[:id]
   @memo = memos[params[:id]]
+  @title = "#{@memo['title']} | Memo App"
   erb :show
 end
 
@@ -36,6 +39,7 @@ get '/memos/:id/edit' do
   memos = read_memos(FILE_PATH)
   @id = params[:id]
   @memo = memos[params[:id]]
+  @title = "Edit - #{@memo['title']} | Memo App"
   erb :edit
 end
 
