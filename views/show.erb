@@ -1,18 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title><%= @memo['title'] %> | Memo App</title>
-</head>
-<body>
-  <h1>Memo App</h1>
-  <main>
-    <h2><%= @memo['title'] %></h2>
-    <p><%= @memo['contents'] %></p>
-  </main>
-  <form action="/memos/<%= @id %>" method="post">
-    <input type="hidden" name="_method" value="DELETE">
-    <input type="submit" value="Delete">
-  </form>
-</body>
-</html>
+<h2><%= @memo['title'] %></h2>
+<p><%= @memo['contents'] %></p>
+<form action="/memos/<%= @id %>" method="post">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete">
+</form>

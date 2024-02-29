@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>New Memo | Memo App</title>
-</head>
-<body>
-  <h1>Memo App</h1>
-  <main>
-    <form action="/memos/create" method="POST">
-      <div class="form-items">
-        <div class="form-items__item">
-          <label>タイトル</label>
-          <input type="text" name="title">
-        </div>
-        <div class="form-items__item">
-          <label>本文</label>
-          <textarea name="contents" rows="10"></textarea>
-        </div>
-      </div>
-      <div class="form-action">
-        <input type="submit" value="保存">
-      </div>
-    </form>
-  </main>
-</body>
-</html>
+<form action="/memos/create" method="POST">
+  <div class="form-items">
+    <div class="form-items__item">
+      <label>タイトル</label>
+      <input type="text" name="title">
+    </div>
+    <div class="form-items__item">
+      <label>本文</label>
+      <textarea name="contents" rows="10"></textarea>
+    </div>
+  </div>
+  <div class="form-action">
+    <input type="submit" value="保存">
+  </div>
+</form>
