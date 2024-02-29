@@ -1,6 +1,11 @@
 <h2><%= @memo['title'] %></h2>
 <p><%= @memo['contents'] %></p>
-<form action="/memos/<%= @id %>" method="post">
-  <input type="hidden" name="_method" value="DELETE">
-  <input type="submit" value="Delete">
-</form>
+<div class='action-buttons'>
+  <form action="/memos/<%= @id %>/edit" method="get">
+    <input type="submit" value="Edit">
+  </form>
+  <form action="/memos/<%= @id %>" method="post">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="submit" value="Delete">
+  </form>
+</div>
