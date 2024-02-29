@@ -8,7 +8,7 @@ FILE_PATH = './data/memos.json'
 
 ['/', '/memos'].each do |path|
   get path do
-    @memos = read_memos(FILE_PATH)
+    @memos = read_memos(FILE_PATH) || {}
     @title = 'Memo App'
     erb :index
   end
