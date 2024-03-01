@@ -57,6 +57,10 @@ delete '/memos/:id' do
   redirect '/memos'
 end
 
+not_found do
+  erb :not_found
+end
+
 def read_memos(file_path)
   return nil if File.zero?(file_path)
 
