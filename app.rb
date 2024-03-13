@@ -22,7 +22,7 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memos = read_memos(FILE_PATH) || {}
+  memos = read_memos(FILE_PATH)
   max_id = memos.keys.map(&:to_i).max || 0
   memos[max_id + 1] = params
   save_memos(FILE_PATH, memos)
@@ -64,7 +64,7 @@ not_found do
 end
 
 def read_memos(file_path)
-  return nil if File.zero?(file_path)
+  return {} if File.zero?(file_path)
 
   File.open(file_path, 'r') { |f| JSON.parse(f.read) }
 end
