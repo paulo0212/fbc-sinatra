@@ -11,7 +11,7 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = read_memos(FILE_PATH) || {}
+  @memos = read_memos(FILE_PATH)
   @title = 'Memo App'
   erb :index
 end
