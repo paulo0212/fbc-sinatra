@@ -45,9 +45,7 @@ patch '/memos/:id' do
 end
 
 delete '/memos/:id' do
-  memos = read_memos(FILE_PATH)
-  memos.delete(params[:id])
-  save_memos(FILE_PATH, memos)
+  delete(params[:id])
   redirect '/memos'
 end
 
@@ -83,4 +81,8 @@ end
 
 def update(id, params)
   conn.exec('UPDATE memos SET title = $2, contents = $3 WHERE id = $1', [id, params['title'], params['contents']])
+end
+
+def delete(id)
+  conn.exec('DELETE FROM memos where id = $1', [id])
 end
