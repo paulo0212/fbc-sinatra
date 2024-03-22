@@ -31,17 +31,13 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  memos = read_memos(FILE_PATH)
-  @id = params[:id]
-  @memo = memos[params[:id]]
+  @memo = find(params[:id])
   @title = "#{@memo['title']} | Memo App"
   erb :show
 end
 
 get '/memos/:id/edit' do
-  memos = read_memos(FILE_PATH)
-  @id = params[:id]
-  @memo = memos[params[:id]]
+  @memo = find(params[:id])
   @title = "Edit - #{@memo['title']} | Memo App"
   erb :edit
 end
@@ -80,4 +76,8 @@ end
 
 def fetch_all
   conn.exec('SELECT * FROM memos')
+end
+
+def find(id)
+  conn.exec("SELECT * FROM memos WHERE id = #{id}").tuple(0)
 end
