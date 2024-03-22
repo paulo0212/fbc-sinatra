@@ -12,7 +12,7 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = read_memos(FILE_PATH)
+  @memos = fetch_all
   @title = 'Memo App'
   erb :index
 end
@@ -64,18 +64,20 @@ not_found do
   erb :not_found
 end
 
-def read_memos(file_path)
-  return {} if File.zero?(file_path)
-
-  File.open(file_path, 'r') { |f| JSON.parse(f.read) }
-end
-
-def save_memos(file_path, memos)
-  File.open(file_path, 'w') { |f| JSON.dump(memos, f) }
+configure do
+  conn.exec('CREATE TABLE IF NOT EXISTS memos (id serial PRIMARY KEY, title varchar(255), contents text)')
 end
 
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
   end
+end
+
+def conn
+  @conn ||= PG.connect(dbname: 'memo_app')
+end
+
+def fetch_all
+  conn.exec('SELECT * FROM memos')
 end
