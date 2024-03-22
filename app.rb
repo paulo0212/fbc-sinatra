@@ -23,10 +23,7 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memos = read_memos(FILE_PATH)
-  max_id = memos.keys.map(&:to_i).max || 0
-  memos[max_id + 1] = params
-  save_memos(FILE_PATH, memos)
+  create(params)
   redirect '/memos'
 end
 
@@ -80,4 +77,8 @@ end
 
 def find(id)
   conn.exec("SELECT * FROM memos WHERE id = #{id}").tuple(0)
+end
+
+def create(params)
+  conn.exec('INSERT INTO memos (title, contents) VALUES ($1, $2)', [params['title'], params['contents']])
 end
