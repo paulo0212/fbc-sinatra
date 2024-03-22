@@ -40,9 +40,7 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  memos = read_memos(FILE_PATH)
-  memos[params[:id]] = params.slice(:title, :contents)
-  save_memos(FILE_PATH, memos)
+  update(params[:id], params)
   redirect "/memos/#{params[:id]}"
 end
 
@@ -81,4 +79,8 @@ end
 
 def create(params)
   conn.exec('INSERT INTO memos (title, contents) VALUES ($1, $2)', [params['title'], params['contents']])
+end
+
+def update(id, params)
+  conn.exec('UPDATE memos SET title = $2, contents = $3 WHERE id = $1', [id, params['title'], params['contents']])
 end
