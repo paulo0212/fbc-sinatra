@@ -59,19 +59,19 @@ def fetch_all
 end
 
 def find(id)
-  conn.exec("SELECT * FROM memos WHERE id = #{id}").tuple(0)
+  conn.exec_params('SELECT * FROM memos WHERE id = $1', [id]).tuple(0)
 end
 
 def create(params)
-  conn.exec('INSERT INTO memos (title, contents) VALUES ($1, $2)', [params['title'], params['contents']])
+  conn.exec_params('INSERT INTO memos (title, contents) VALUES ($1, $2)', [params['title'], params['contents']])
 end
 
 def update(id, params)
-  conn.exec('UPDATE memos SET title = $2, contents = $3 WHERE id = $1', [id, params['title'], params['contents']])
+  conn.exec_params('UPDATE memos SET title = $2, contents = $3 WHERE id = $1', [id, params['title'], params['contents']])
 end
 
 def delete(id)
-  conn.exec('DELETE FROM memos where id = $1', [id])
+  conn.exec_params('DELETE FROM memos where id = $1', [id])
 end
 
 configure do
