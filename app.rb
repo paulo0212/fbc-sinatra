@@ -50,16 +50,6 @@ not_found do
   erb :not_found
 end
 
-configure do
-  conn.exec('CREATE TABLE IF NOT EXISTS memos (id serial PRIMARY KEY, title varchar(255), contents text)')
-end
-
-helpers do
-  def h(text)
-    Rack::Utils.escape_html(text)
-  end
-end
-
 def conn
   @conn ||= PG.connect(dbname: 'memo_app')
 end
@@ -82,4 +72,14 @@ end
 
 def delete(id)
   conn.exec('DELETE FROM memos where id = $1', [id])
+end
+
+configure do
+  conn.exec('CREATE TABLE IF NOT EXISTS memos (id serial PRIMARY KEY, title varchar(255), contents text)')
+end
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
 end
