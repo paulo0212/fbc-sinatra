@@ -55,7 +55,7 @@ def conn
 end
 
 def fetch_all
-  conn.exec('SELECT * FROM memos')
+  conn.exec('SELECT * FROM memos ORDER BY id DESC')
 end
 
 def find(id)
