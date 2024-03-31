@@ -26,12 +26,16 @@ end
 
 get '/memos/:id' do
   @memo = find(params[:id])
+  return erb :not_found unless @memo
+
   @title = "#{@memo['title']} | Memo App"
   erb :show
 end
 
 get '/memos/:id/edit' do
   @memo = find(params[:id])
+  return erb :not_found unless @memo
+
   @title = "Edit - #{@memo['title']} | Memo App"
   erb :edit
 end
@@ -59,7 +63,7 @@ def fetch_all
 end
 
 def find(id)
-  conn.exec_params('SELECT * FROM memos WHERE id = $1', [id]).tuple(0)
+  conn.exec_params('SELECT * FROM memos WHERE id = $1', [id]).first
 end
 
 def create(params)
