@@ -2,16 +2,14 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'json'
-
-FILE_PATH = './data/memos.json'
+require 'pg'
 
 get '/' do
   redirect to('/memos')
 end
 
 get '/memos' do
-  @memos = read_memos(FILE_PATH)
+  @memos = fetch_all
   @title = 'Memo App'
   erb :index
 end
@@ -22,40 +20,33 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  memos = read_memos(FILE_PATH)
-  max_id = memos.keys.map(&:to_i).max || 0
-  memos[max_id + 1] = params
-  save_memos(FILE_PATH, memos)
+  create(params)
   redirect '/memos'
 end
 
 get '/memos/:id' do
-  memos = read_memos(FILE_PATH)
-  @id = params[:id]
-  @memo = memos[params[:id]]
+  @memo = find(params[:id])
+  return erb :not_found unless @memo
+
   @title = "#{@memo['title']} | Memo App"
   erb :show
 end
 
 get '/memos/:id/edit' do
-  memos = read_memos(FILE_PATH)
-  @id = params[:id]
-  @memo = memos[params[:id]]
+  @memo = find(params[:id])
+  return erb :not_found unless @memo
+
   @title = "Edit - #{@memo['title']} | Memo App"
   erb :edit
 end
 
 patch '/memos/:id' do
-  memos = read_memos(FILE_PATH)
-  memos[params[:id]] = params.slice(:title, :contents)
-  save_memos(FILE_PATH, memos)
+  update(params[:id], params)
   redirect "/memos/#{params[:id]}"
 end
 
 delete '/memos/:id' do
-  memos = read_memos(FILE_PATH)
-  memos.delete(params[:id])
-  save_memos(FILE_PATH, memos)
+  delete(params[:id])
   redirect '/memos'
 end
 
@@ -63,14 +54,32 @@ not_found do
   erb :not_found
 end
 
-def read_memos(file_path)
-  return {} if File.zero?(file_path)
-
-  File.open(file_path, 'r') { |f| JSON.parse(f.read) }
+def conn
+  @conn ||= PG.connect(dbname: 'memo_app')
 end
 
-def save_memos(file_path, memos)
-  File.open(file_path, 'w') { |f| JSON.dump(memos, f) }
+def fetch_all
+  conn.exec('SELECT * FROM memos ORDER BY id DESC')
+end
+
+def find(id)
+  conn.exec_params('SELECT * FROM memos WHERE id = $1', [id]).first
+end
+
+def create(params)
+  conn.exec_params('INSERT INTO memos (title, contents) VALUES ($1, $2)', [params['title'], params['contents']])
+end
+
+def update(id, params)
+  conn.exec_params('UPDATE memos SET title = $2, contents = $3 WHERE id = $1', [id, params['title'], params['contents']])
+end
+
+def delete(id)
+  conn.exec_params('DELETE FROM memos where id = $1', [id])
+end
+
+configure do
+  conn.exec('CREATE TABLE IF NOT EXISTS memos (id serial PRIMARY KEY, title varchar(255), contents text)')
 end
 
 helpers do
